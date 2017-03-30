@@ -3,8 +3,10 @@ package com.jblearning.tictactoev0;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.util.Log;
 
 /*
     https://developer.android.com/reference/android/widget/GridLayout.html
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Create the buttons and add them to gridLayout
         buttons = new Button[TicTacToe.SIDE][TicTacToe.SIDE];
+        ButtonHandler bh = new ButtonHandler();
         for( int row = 0; row < TicTacToe.SIDE; row++ ) {
             for( int col = 0; col < TicTacToe.SIDE; col++ ) {
                 buttons[row][col] = new Button( this );
@@ -42,5 +45,20 @@ public class MainActivity extends AppCompatActivity {
 
         // Set gridLayout as the View of this Activity
         setContentView( gridLayout );
+    } // end buildGuiByCode
+
+    public void update(int row, int col) {
+        Log.w( "MainActivity", "Inside update: " + row + ", " + col );
+        buttons[row][col].setText( "X" );
     }
-}
+
+    private class ButtonHandler implements View.OnClickListener {
+        public void onClick( View v ) {
+            Log.w( "MainActivity", "Inside onClick, v = " + v );
+            for( int row = 0; row < TicTacToe.SIDE; row++ )
+                for( int column = 0; column < TicTacToe.SIDE; column++ )
+                    if ( v == buttons[row][column] )
+                        update(row, column);
+        }
+    } // end ButtonHandler
+} // end main class
