@@ -13,12 +13,14 @@ import android.util.Log;
     https://blog.stylingandroid.com/gridlayout-part-1/
  */
 public class MainActivity extends AppCompatActivity {
+    private TicTacToe tttGame;
     private Button [][] buttons;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         // setContentView( R.layout.activity_main );
+        tttGame = new TicTacToe( );
         buildGuiByCode( ); //
     }
 
@@ -48,8 +50,20 @@ public class MainActivity extends AppCompatActivity {
     } // end buildGuiByCode
 
     public void update(int row, int col) {
-        Log.w( "MainActivity", "Inside update: " + row + ", " + col );
-        buttons[row][col].setText( "X" );
+        int play = tttGame.play( row, col );
+        buttons[row][col].setText( "X" );          if( play == 1 )
+            buttons[row][col].setText( "X" );
+        else if( play == 2 )
+            buttons[row][col].setText( "O" );
+        if( tttGame.isGameOver( ) ) // game over, disable buttons
+            enableButtons( false );
+    }
+
+    public void enableButtons( boolean enabled ) {
+        for( int row = 0; row < TicTacToe.SIDE; row++ )
+            for( int col = 0; col < TicTacToe.SIDE; col++ )
+                buttons[row][col].setEnabled( enabled );
+
     }
 
     private class ButtonHandler implements View.OnClickListener {
